@@ -4,7 +4,7 @@ package com.sliit.blockbuster;
  * Created by Shalitha on 3/27/2018.
  */
 
-public class Movie {
+public class MovieModel {
     private String movieName;
     private String image;
     private String year;
@@ -16,10 +16,11 @@ public class Movie {
     private String actors;
     private String plot;
     private String url;
+    private String writer;
 
-    public Movie(String movieName, String image, String year, String released, String genre,
-                 String runtime, String director, String imdbRating, String actors,
-                 String plot, String url) {
+    public MovieModel(String movieName, String image, String year, String released, String genre,
+                      String runtime, String director, String imdbRating, String actors,
+                      String plot, String url,String writer) {
         this.movieName = movieName;
         this.image = image;
         this.year = year;
@@ -31,6 +32,7 @@ public class Movie {
         this.actors = actors;
         this.plot = plot;
         this.url = url;
+        this.writer = writer;
 
     }
 
@@ -42,10 +44,7 @@ public class Movie {
         return plot;
     }
 
-    public String getActors() {
-        return actors;
-
-    }
+    public String getActors() { return actors; }
 
     public String getImdbRating() {
         return imdbRating;
@@ -76,4 +75,6 @@ public class Movie {
     }
 
     public String getUrl() { return url; }
+
+    public String getWriter() { return writer; }
 }

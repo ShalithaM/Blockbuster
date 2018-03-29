@@ -1,6 +1,5 @@
 package com.sliit.blockbuster;
 
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.ConnectivityManager;
@@ -8,54 +7,70 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.content.Intent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
-import android.content.Intent;
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-public class MainActivity extends AppCompatActivity {
+public class MovieDetailView extends AppCompatActivity {
 
-
-    public static final String URL = "https://api.myjson.com/bins/12afwv";
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-
-    private List<MovieModel> movies;
+    public static final String URL = "http://www.omdbapi.com/?apikey=ad294e63&t=";
+    private String movieUrl="";
+    private String movieName="";
+    private MovieModel movie;
     private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_main );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_movie_detail_view);
 
-        progressBar = findViewById( R.id.progressBar );
-        recyclerView = findViewById( R.id.recyclerView );
+        progressBar = findViewById(R.id.progressBar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled( true );
 
-        recyclerView.setHasFixedSize( true );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) );
+        // Get the Intent that started this activity and extract the string
+        movieName = Objects.requireNonNull(getIntent().getExtras()).getString("MOVIE_NAME");
+        movieUrl = getIntent().getExtras().getString("WEB_URL");
 
-        movies = new ArrayList<>();
 
+        // Capture the movieName and call the webservice
+//        TextView textView = findViewById(R.id.movieName);
+//        textView.setText(movieName);
+
+        //call webservice to get all the movie data
         if(isNetworkAvailable()){
-            loadRecycleViewData();
+            loadMovieDetails();
+            TextView movieName = findViewById(R.id.movieName);
+            TextView year = findViewById(R.id.year);
+            TextView director = findViewById(R.id.director);
+            TextView actors = findViewById(R.id.actors);
+            TextView genre = findViewById(R.id.genre);
+            TextView plot = findViewById(R.id.plot);
+            TextView writer = findViewById(R.id.writer);
+
+
+//            movieName.setText(movie.getMovieName());
+//            year.setText(movie.getYear());
+//            director.setText(movie.getDirector());
+//            actors.setText(movie.getActors());
+//            genre.setText(movie.getGenre());
+//            plot.setText(movie.getPlot());
+//            writer.setText(movie.getWriter());
+
         }else{
             new AlertDialog.Builder(this)
                     .setTitle("No internet connection")
@@ -67,26 +82,33 @@ public class MainActivity extends AppCompatActivity {
                             System.exit( 0 );
                         }}).show();
         }
+
     }
 
-    private void loadRecycleViewData(){
+    public void webView(View view) {
+
+        Intent intent = new Intent( MovieDetailView.this,DetailWebView.class );
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("WEB_URL", movieUrl);
+        intent.putExtra("MOVIE_NAME", movieName);
+        MovieDetailView.this.startActivity(intent);
+
+    }
+
+
+    private void loadMovieDetails(){
 
         progressBar.setVisibility( View.VISIBLE);
 
-        StringRequest stringRequest = new StringRequest( Request.Method.GET,URL,
+        new StringRequest( Request.Method.GET,URL+movieName,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
                         progressBar.setVisibility( View.GONE);
-
                         try {
-                            JSONObject jsonObject = new JSONObject( response );
-                            JSONArray movieArray = jsonObject.getJSONArray( "movies" );
+                            JSONObject movieJSON = new JSONObject( response );
 
-                            for (int i=0;i<movieArray.length();i++){
-                                JSONObject movieJSON = movieArray.getJSONObject( i );
-                                MovieModel movie = new MovieModel(
+                                movie = new MovieModel(
                                         movieJSON.getString( "Title" ),
                                         movieJSON.getString( "Poster" ),
                                         movieJSON.getString( "Year" ),
@@ -98,14 +120,8 @@ public class MainActivity extends AppCompatActivity {
                                         movieJSON.getString( "Actors" ),
                                         movieJSON.getString( "Plot" ),
                                         movieJSON.getString( "Website" ),
-                                        movieJSON.getString("Writer")
-
+                                        movieJSON.getString( "Writer")
                                 );
-                                movies.add(movie);
-                            }
-
-                            adapter = new MovieListAdapter(movies,getApplicationContext() );
-                            recyclerView.setAdapter( adapter );
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -119,14 +135,7 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText( getApplicationContext(), error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 } );
-
-        RequestQueue requestQueue = Volley.newRequestQueue( this );
-        requestQueue.add( stringRequest );
-
     }
-
-
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager

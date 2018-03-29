@@ -1,5 +1,6 @@
 package com.sliit.blockbuster;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,17 +9,20 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-public class DetailView extends AppCompatActivity {
+import java.util.Objects;
+
+public class DetailWebView extends AppCompatActivity {
 
     WebView webView;
     ProgressBar progressBar;
 
+    @SuppressLint("SetJavaScriptEnabled")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_detail_view );
+        setContentView( R.layout.activity_detail_web_view);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled( true );
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled( false );
         webView= findViewById( R.id.detailView );
         progressBar = findViewById( R.id.progressBar );
 
@@ -46,6 +50,12 @@ public class DetailView extends AppCompatActivity {
             view.loadUrl(url);
             return super.shouldOverrideUrlLoading(view, url);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        super.finish();
     }
 
 }

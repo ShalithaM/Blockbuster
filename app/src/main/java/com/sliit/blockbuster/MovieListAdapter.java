@@ -12,23 +12,17 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
-/**
- * Created by Shalitha on 3/27/2018.
- */
+public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
 
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
-
-    private List<Movie> movies;
+    private List<MovieModel> movies;
     private Context context;
     String date;
 
-    public Adapter(List<Movie> movies, Context context) {
+    public MovieListAdapter(List<MovieModel> movies, Context context) {
         this.movies = movies;
         this.context = context;
     }
@@ -43,7 +37,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final Movie movie = movies.get(position);
+        final MovieModel movie = movies.get(position);
 
         holder.movieName.setText(movie.getMovieName());
         holder.year.setText( movie.getYear() );
@@ -59,8 +53,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder>{
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent( context,DetailView.class );
-                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+//                Intent intent = new Intent( context,DetailWebView.class );
+//                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+//                intent.putExtra("WEB_URL", movie.getUrl());
+//                context.getApplicationContext().startActivity(intent);
+
+                //passing selected movie name to MovieDetailView activity by using intents
+                Intent intent = new Intent( context, MovieDetailView.class);
+                intent.putExtra("MOVIE_NAME", movie.getMovieName());
                 intent.putExtra("WEB_URL", movie.getUrl());
                 context.getApplicationContext().startActivity(intent);
 

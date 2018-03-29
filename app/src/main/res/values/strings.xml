@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Blockbuster</string>
+    <string name="movieDetail">Movie Info</string>
+    <string name="movieWeb">More Info</string>
+    <string name="heading">Movie Name</string>
+    <string name="dateTime">Year of the Movie</string>
+    <string name="plot">Plot Description</string>
+    <string name="image">Movie Image Here</string>
+    <string name="director">Director</string>
+    <string name="actors">Actors</string>
+    <string name="writer">About Writer</string>
+    <string name="genre">Genre</string>
+    <string name="moreInfo">More Info</string>
 </resources>
