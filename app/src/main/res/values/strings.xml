@@ -11,4 +11,11 @@
     <string name="writer">About Writer</string>
     <string name="genre">Genre</string>
     <string name="moreInfo">More Info</string>
+
+    <string name="labelYear">Year :</string>
+    <string name="labelDirector">Director :</string>
+    <string name="labelActors">Actors :</string>
+    <string name="labelGenre">Genre :</string>
+    <string name="labelPlot">Plot :</string>
+    <string name="labelWriter">Writer :</string>
 </resources>

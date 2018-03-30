@@ -10,10 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,31 +28,34 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
-
-public class MainActivity extends AppCompatActivity {
+public class MovieMainActivity extends AppCompatActivity {
 
 
+    //base URL of the first webservice to get movie list
     public static final String URL = "https://api.myjson.com/bins/12afwv";
+    //creating objects for recycler view and adapter
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
+    //creating list from movie model to store movie list
     private List<MovieModel> movies;
+    //initialize progressbar object to animate loading view
     private ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_main );
+        setContentView( R.layout.activity_movie_main);
 
         progressBar = findViewById( R.id.progressBar );
         recyclerView = findViewById( R.id.recyclerView );
 
         recyclerView.setHasFixedSize( true );
-        recyclerView.setLayoutManager( new LinearLayoutManager( this ) );
+        recyclerView.setLayoutManager( new LinearLayoutManager( MovieMainActivity.this ) );
 
         movies = new ArrayList<>();
 
+        //check for network connection availability
         if(isNetworkAvailable()){
             loadRecycleViewData();
         }else{
@@ -70,10 +71,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // calling webservice and assign results to movie list
     private void loadRecycleViewData(){
-
         progressBar.setVisibility( View.VISIBLE);
-
         StringRequest stringRequest = new StringRequest( Request.Method.GET,URL,
                 new Response.Listener<String>() {
                     @Override
@@ -100,7 +100,6 @@ public class MainActivity extends AppCompatActivity {
                                         movieJSON.getString( "Plot" ),
                                         movieJSON.getString( "Website" ),
                                         movieJSON.getString( "Writer")
-
                                 );
                                 movies.add(movie);
                             }
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
+    //check network connection availability
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE);

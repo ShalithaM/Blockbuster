@@ -13,26 +13,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MovieMainActivity">
         </activity>
         <activity
             android:label="@string/movieDetail"
             android:name=".MovieDetailView"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MovieMainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".MovieMainActivity" />
         </activity>
         <activity
             android:label="@string/movieWeb"
-            android:name=".DetailWebView"
+            android:name=".MovieDetailWebView"
             android:parentActivityName=".MovieDetailView">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MovieDetailView" />
         </activity>
         <activity
-            android:name=".SplashScreen"
+            android:name=".MovieSplashScreen"
             android:theme="@style/AppThemeSplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

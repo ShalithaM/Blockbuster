@@ -1,7 +1,9 @@
 package com.sliit.blockbuster;
 
 /**
- * Created by Shalitha on 3/27/2018.
+ * movie model created for map incoming data from webservices and getters
+ * created for get values from created object
+ *
  */
 
 public class MovieModel {

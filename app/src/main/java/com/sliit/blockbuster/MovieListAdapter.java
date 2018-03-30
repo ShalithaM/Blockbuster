@@ -14,8 +14,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
-
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.ViewHolder>{
 
     private List<MovieModel> movies;
@@ -31,7 +29,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item,parent,false);
+                .inflate(R.layout.activity_movie_list_item,parent,false);
         return new ViewHolder(view);
     }
 
@@ -39,6 +37,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final MovieModel movie = movies.get(position);
 
+        //setting movie details to card view
         holder.movieName.setText(movie.getMovieName());
         holder.year.setText( movie.getYear() );
         holder.genre.setText(movie.getGenre());
@@ -49,19 +48,17 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 .placeholder( R.drawable.splash )
             .into( holder.image );
 
+
+        //when the card clicked onclick listener will work
         holder.linearLayout.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-//                Intent intent = new Intent( context,DetailWebView.class );
-//                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
-//                intent.putExtra("WEB_URL", movie.getUrl());
-//                context.getApplicationContext().startActivity(intent);
-
-                //passing selected movie name to MovieDetailView activity by using intents
+                //passing selected movie name and web url to MovieDetailView activity by using intents
                 Intent intent = new Intent( context, MovieDetailView.class);
                 intent.putExtra("MOVIE_NAME", movie.getMovieName());
                 intent.putExtra("WEB_URL", movie.getUrl());
+                //trigger the MovieDetailView activity
                 context.getApplicationContext().startActivity(intent);
 
             }

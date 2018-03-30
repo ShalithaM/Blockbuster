@@ -2,14 +2,12 @@ package com.sliit.blockbuster;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +23,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -35,6 +32,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MovieDetailView extends AppCompatActivity {
 
+    //base URL of the second webservice to get movie data by movie title
     public static final String URL = "http://www.omdbapi.com/?apikey=ad294e63&t=";
     private String movieUrl="";
     private String movieName="";
@@ -47,6 +45,7 @@ public class MovieDetailView extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail_view);
 
         progressBar = findViewById(R.id.progressBar);
+        //set back navigation to activity
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled( true );
 
         // Get the Intent that started this activity and extract the string
@@ -54,15 +53,10 @@ public class MovieDetailView extends AppCompatActivity {
         movieUrl = getIntent().getExtras().getString("WEB_URL");
 
 
-        // Capture the movieName and call the webservice
-//        TextView textView = findViewById(R.id.movieName);
-//        textView.setText(movieName);
-
-        //call webservice to get all the movie data
+        //check for network availability
         if(isNetworkAvailable()){
+            //load data to the view
             loadMovieDetails();
-
-
         }else{
             new AlertDialog.Builder(this)
                     .setTitle("No internet connection")
@@ -77,9 +71,11 @@ public class MovieDetailView extends AppCompatActivity {
 
     }
 
+    //onclick method of MORE INFO button
     public void webView(View view) {
 
-        Intent intent = new Intent( MovieDetailView.this,DetailWebView.class );
+        // set the intents and view next activity
+        Intent intent = new Intent( MovieDetailView.this,MovieDetailWebView.class );
         intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("WEB_URL", movieUrl);
         intent.putExtra("MOVIE_NAME", movieName);
@@ -88,10 +84,10 @@ public class MovieDetailView extends AppCompatActivity {
     }
 
 
+    //calling webservice to get single movie detail and set results to the view
     private void loadMovieDetails(){
 
         progressBar.setVisibility( View.VISIBLE);
-        Log.i("Log************", "calling function");
         StringRequest stringRequest = new StringRequest( Request.Method.GET,URL+movieName,
                 new Response.Listener<String>() {
                     @Override
@@ -124,8 +120,6 @@ public class MovieDetailView extends AppCompatActivity {
                             TextView plot = findViewById(R.id.plot);
                             TextView writer = findViewById(R.id.writer);
                             ImageView image = findViewById(R.id.image);
-//                            CardView cardView = findViewById(R.id.detailCard);
-
 
                             movieName.setText(movie.getMovieName());
                             year.setText(movie.getYear());
@@ -138,7 +132,6 @@ public class MovieDetailView extends AppCompatActivity {
                                     .load( movie.getImage() )
                                     .placeholder( R.drawable.splash )
                                     .into( image );
-//                            cardView.setVerticalScrollBarEnabled(true);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -156,6 +149,7 @@ public class MovieDetailView extends AppCompatActivity {
         requestQueue.add( stringRequest );
     }
 
+    //check for network availability
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService( Context.CONNECTIVITY_SERVICE);

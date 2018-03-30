@@ -7,6 +7,6 @@
     android:background="@drawable/splash"
     android:gravity="fill_vertical"
     android:orientation="vertical"
-    tools:context="com.sliit.blockbuster.SplashScreen">
+    tools:context="com.sliit.blockbuster.MovieSplashScreen">
 
 </LinearLayout>

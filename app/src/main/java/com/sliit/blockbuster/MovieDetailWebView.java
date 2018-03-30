@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import java.util.Objects;
 
-public class DetailWebView extends AppCompatActivity {
+public class MovieDetailWebView extends AppCompatActivity {
 
     WebView webView;
     ProgressBar progressBar;
@@ -20,7 +20,7 @@ public class DetailWebView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_detail_web_view);
+        setContentView( R.layout.activity_movie_detail_web_view);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled( false );
         webView= findViewById( R.id.detailView );

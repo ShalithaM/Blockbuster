@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
-public class SplashScreen extends AppCompatActivity {
+public class MovieSplashScreen extends AppCompatActivity {
 
     private static final int SPLASH_SHOW_TIME = 4800;
 
@@ -17,14 +17,14 @@ public class SplashScreen extends AppCompatActivity {
         requestWindowFeature( Window.FEATURE_NO_TITLE);
         getWindow().setFlags( WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView( R.layout.activity_splash_screen );
+        setContentView( R.layout.activity_movie_splash_screen);
 
         new Handler().postDelayed( new Runnable(){
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreen.this,MainActivity.class);
-                SplashScreen.this.startActivity(mainIntent);
-                SplashScreen.this.finish();
+                Intent mainIntent = new Intent(MovieSplashScreen.this,MovieMainActivity.class);
+                MovieSplashScreen.this.startActivity(mainIntent);
+                MovieSplashScreen.this.finish();
             }
         }, SPLASH_SHOW_TIME);
     }
