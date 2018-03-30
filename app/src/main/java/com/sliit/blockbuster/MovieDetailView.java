@@ -2,21 +2,28 @@ package com.sliit.blockbuster;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,22 +61,7 @@ public class MovieDetailView extends AppCompatActivity {
         //call webservice to get all the movie data
         if(isNetworkAvailable()){
             loadMovieDetails();
-            TextView movieName = findViewById(R.id.movieName);
-            TextView year = findViewById(R.id.year);
-            TextView director = findViewById(R.id.director);
-            TextView actors = findViewById(R.id.actors);
-            TextView genre = findViewById(R.id.genre);
-            TextView plot = findViewById(R.id.plot);
-            TextView writer = findViewById(R.id.writer);
 
-
-//            movieName.setText(movie.getMovieName());
-//            year.setText(movie.getYear());
-//            director.setText(movie.getDirector());
-//            actors.setText(movie.getActors());
-//            genre.setText(movie.getGenre());
-//            plot.setText(movie.getPlot());
-//            writer.setText(movie.getWriter());
 
         }else{
             new AlertDialog.Builder(this)
@@ -99,15 +91,16 @@ public class MovieDetailView extends AppCompatActivity {
     private void loadMovieDetails(){
 
         progressBar.setVisibility( View.VISIBLE);
-
-        new StringRequest( Request.Method.GET,URL+movieName,
+        Log.i("Log************", "calling function");
+        StringRequest stringRequest = new StringRequest( Request.Method.GET,URL+movieName,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressBar.setVisibility( View.GONE);
+
                         try {
                             JSONObject movieJSON = new JSONObject( response );
-
+                            Log.i("Log************", movieJSON.getString( "Title"));
                                 movie = new MovieModel(
                                         movieJSON.getString( "Title" ),
                                         movieJSON.getString( "Poster" ),
@@ -123,6 +116,30 @@ public class MovieDetailView extends AppCompatActivity {
                                         movieJSON.getString( "Writer")
                                 );
 
+                            TextView movieName = findViewById(R.id.movieName);
+                            TextView year = findViewById(R.id.year);
+                            TextView director = findViewById(R.id.director);
+                            TextView actors = findViewById(R.id.actors);
+                            TextView genre = findViewById(R.id.genre);
+                            TextView plot = findViewById(R.id.plot);
+                            TextView writer = findViewById(R.id.writer);
+                            ImageView image = findViewById(R.id.image);
+//                            CardView cardView = findViewById(R.id.detailCard);
+
+
+                            movieName.setText(movie.getMovieName());
+                            year.setText(movie.getYear());
+                            director.setText(movie.getDirector());
+                            actors.setText(movie.getActors());
+                            genre.setText(movie.getGenre());
+                            plot.setText(movie.getPlot());
+                            writer.setText(movie.getWriter());
+                            Picasso.with( MovieDetailView.this )
+                                    .load( movie.getImage() )
+                                    .placeholder( R.drawable.splash )
+                                    .into( image );
+//                            cardView.setVerticalScrollBarEnabled(true);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -135,6 +152,8 @@ public class MovieDetailView extends AppCompatActivity {
                         Toast.makeText( getApplicationContext(), error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 } );
+        RequestQueue requestQueue = Volley.newRequestQueue( this );
+        requestQueue.add( stringRequest );
     }
 
     private boolean isNetworkAvailable() {
