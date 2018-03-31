@@ -39,9 +39,10 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
 
         //setting movie details to card view
         holder.movieName.setText(movie.getMovieName());
-        holder.year.setText( movie.getYear() );
-        holder.genre.setText(movie.getGenre());
-        holder.plot.setText(movie.getPlot());
+        holder.year.setText("Year : " + movie.getYear() );
+        holder.genre.setText("Genre : " + movie.getGenre());
+        holder.imdbRating.setText("IMDB Rating : " + movie.getImdbRating());
+        holder.released.setText("Released : " + movie.getReleased());
 
         Picasso.with( context )
             .load( movie.getImage() )
@@ -59,6 +60,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
                 intent.putExtra("MOVIE_NAME", movie.getMovieName());
                 intent.putExtra("WEB_URL", movie.getUrl());
                 //trigger the MovieDetailView activity
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.getApplicationContext().startActivity(intent);
 
             }
@@ -75,7 +77,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
         public TextView movieName;
         public TextView year;
         public TextView genre;
-        public TextView plot;
+        public TextView imdbRating;
+        public TextView released;
         public ImageView image;
         public LinearLayout linearLayout;
 
@@ -86,7 +89,8 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.View
             year = itemView.findViewById(R.id.year);
             genre = itemView.findViewById(R.id.genre);
             image = itemView.findViewById( R.id.image );
-            plot = itemView.findViewById(R.id.plot);
+            imdbRating = itemView.findViewById(R.id.imdbRating);
+            released = itemView.findViewById(R.id.released);
             linearLayout = itemView.findViewById( R.id.linearLayout );
         }
 

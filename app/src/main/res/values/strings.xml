@@ -11,6 +11,7 @@
     <string name="writer">About Writer</string>
     <string name="genre">Genre</string>
     <string name="moreInfo">More Info</string>
+    <string name="imdbRating">IMDB Rating</string>
 
     <string name="labelYear">Year :</string>
     <string name="labelDirector">Director :</string>
@@ -18,4 +19,5 @@
     <string name="labelGenre">Genre :</string>
     <string name="labelPlot">Plot :</string>
     <string name="labelWriter">Writer :</string>
+    <string name="labelIMDBRating">IMDB Rating :</string>
 </resources>

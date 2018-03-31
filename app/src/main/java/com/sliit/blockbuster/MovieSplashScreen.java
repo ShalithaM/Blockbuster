@@ -9,7 +9,7 @@ import android.view.WindowManager;
 
 public class MovieSplashScreen extends AppCompatActivity {
 
-    private static final int SPLASH_SHOW_TIME = 4800;
+    private static final int SPLASH_SHOW_TIME = 3800;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

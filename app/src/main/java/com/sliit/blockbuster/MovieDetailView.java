@@ -87,6 +87,10 @@ public class MovieDetailView extends AppCompatActivity {
     //calling webservice to get single movie detail and set results to the view
     private void loadMovieDetails(){
 
+        //remove space and replace +
+        movieName = movieName.replaceAll("\\s","+");
+        Log.i("Log************", movieName);
+
         progressBar.setVisibility( View.VISIBLE);
         StringRequest stringRequest = new StringRequest( Request.Method.GET,URL+movieName,
                 new Response.Listener<String>() {
